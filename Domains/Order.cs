@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DbMigration.Domains
 {
@@ -17,6 +18,7 @@ namespace DbMigration.Domains
     public DateTime? RequiredDate { get; set; }
     public DateTime? ShippedDate { get; set; }
     public int? ShipVia { get; set; }
+    [Column(TypeName = "decimal(18,4)")]
     public decimal? Freight { get; set; }
     public string ShipName { get; set; }
     public string ShipAddress { get; set; }
