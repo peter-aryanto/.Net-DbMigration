@@ -1,0 +1,63 @@
+CREATE DATABASE [dbMigration];
+
+IF SERVERPROPERTY('EngineEdition') <> 5
+BEGIN
+    ALTER DATABASE [dbMigration] SET READ_COMMITTED_SNAPSHOT ON;
+END;
+
+SELECT 1
+
+CREATE TABLE [__EFMigrationsHistory] (
+    [MigrationId] nvarchar(150) NOT NULL,
+    [ProductVersion] nvarchar(32) NOT NULL,
+    CONSTRAINT [PK___EFMigrationsHistory] PRIMARY KEY ([MigrationId])
+);
+
+SELECT 1
+
+SELECT OBJECT_ID(N'[__EFMigrationsHistory]');
+
+SELECT [MigrationId], [ProductVersion]
+FROM [__EFMigrationsHistory]
+ORDER BY [MigrationId];
+
+--Applying migration '20230319053810_AddCustomerAndOrder'.
+
+CREATE TABLE [Customers] (
+    [CustomerId] nvarchar(450) NOT NULL,
+    [CompanyName] nvarchar(max) NULL,
+    [ContactName] nvarchar(max) NULL,
+    [ContactTitle] nvarchar(max) NULL,
+    [Address] nvarchar(max) NULL,
+    [City] nvarchar(max) NULL,
+    [Region] nvarchar(max) NULL,
+    [PostalCode] nvarchar(max) NULL,
+    [Country] nvarchar(max) NULL,
+    [Phone] nvarchar(max) NULL,
+    [Fax] nvarchar(max) NULL,
+    CONSTRAINT [PK_Customers] PRIMARY KEY ([CustomerId])
+);
+
+CREATE TABLE [Orders] (
+    [OrderId] int NOT NULL IDENTITY,
+    [CustomerId] nvarchar(450) NULL,
+    [EmployeeId] int NULL,
+    [OrderDate] datetime2 NULL,
+    [RequiredDate] datetime2 NULL,
+    [ShippedDate] datetime2 NULL,
+    [ShipVia] int NULL,
+    [Freight] decimal(18,2) NULL,
+    [ShipName] nvarchar(max) NULL,
+    [ShipAddress] nvarchar(max) NULL,
+    [ShipCity] nvarchar(max) NULL,
+    [ShipRegion] nvarchar(max) NULL,
+    [ShipPostalCode] nvarchar(max) NULL,
+    [ShipCountry] nvarchar(max) NULL,
+    CONSTRAINT [PK_Orders] PRIMARY KEY ([OrderId]),
+    CONSTRAINT [FK_Orders_Customers_CustomerId] FOREIGN KEY ([CustomerId]) REFERENCES [Customers] ([CustomerId])
+);
+
+CREATE INDEX [IX_Orders_CustomerId] ON [Orders] ([CustomerId]);
+
+INSERT INTO [__EFMigrationsHistory] ([MigrationId], [ProductVersion])
+VALUES (N'20230319053810_AddCustomerAndOrder', N'7.0.4');

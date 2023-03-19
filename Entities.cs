@@ -62,6 +62,7 @@ namespace DbMigration
     {
       sc.AddDbContext<Entities>(options =>
           options.UseSqlServer()
+          // options.UseSqlServer("Server=10.252.150.206;Database=dbMigration;User Id=sa;Password=5SNMsmZrqgvTso8OUpJ2;Encrypt=true;trustServerCertificate=true;")
         );
       return sc;
     }
